@@ -1,13 +1,14 @@
 {
   "name": "webcraft-sorteador",
   "version": "1.0.0",
-  "description": "Aplicativo Android construído pelo WebCraft AI a partir do projeto \"Sorteador\"",
+  "description": "Aplicativo Mobile construído pelo WebCraft AI a partir do projeto \"Sorteador\"",
   "main": "index.html",
   "scripts": {
     "build-cap": "npx cap sync"
   },
   "dependencies": {
     "@capacitor/android": "^6.1.0",
+    "@capacitor/ios": "^6.1.0",
     "@capacitor/cli": "^6.1.0",
     "@capacitor/core": "^6.1.0"
   }
