@@ -311,11 +311,13 @@
             }
         }
 
+        // Remove um jogador da lista
         function removePlayer(id) {
             players = players.filter(p => p.id !== id);
             updateUI();
         }
 
+        // Limpa todos os jogadores
         function clearAllPlayers() {
             if (players.length === 0) return;
             if (confirm("Deseja realmente limpar toda a lista?")) {
@@ -326,6 +328,7 @@
             }
         }
 
+        // Atualiza a interface gráfica
         function updateUI() {
             const listContainer = document.getElementById('players-list');
             const emptyState = document.getElementById('empty-state');
@@ -379,6 +382,7 @@
 
         let lastGeneratedTeams = []; 
 
+        // Realiza o sorteio dos times
         function drawTeams() {
             if (players.length < 2) {
                 alert("Adicione pelo menos 2 jogadores para realizar o sorteio.");
@@ -482,6 +486,7 @@
             }, 800);
         }
 
+        // Renderiza os cards dos times
         function renderTeams(teams) {
             const teamsGrid = document.getElementById('teams-grid');
             teamsGrid.innerHTML = '';
@@ -540,13 +545,13 @@
             lucide.createIcons();
         }
 
+        // Copia a escalação de um time individual
         function copySingleTeam(index) {
             const team = lastGeneratedTeams[index];
             if (!team) return;
 
             let text = `*⚽ ${team.meta.name.toUpperCase()} ⚽*\n\n`;
             
-            // Ordena goleiros primeiro na mensagem copiada
             const sorted = [...team.players].sort((a, b) => {
                 if (a.position === 'goleiro' && b.position !== 'goleiro') return -1;
                 return 1;
@@ -565,6 +570,7 @@
             });
         }
 
+        // Copia todos os times gerados
         function copyAllTeams() {
             if (lastGeneratedTeams.length === 0) return;
 
@@ -591,6 +597,7 @@
             });
         }
 
+        // Exibe feedback visual de sucesso
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
