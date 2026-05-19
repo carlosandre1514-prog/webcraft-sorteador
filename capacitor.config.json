@@ -1,6 +1,6 @@
 {
   "appId": "com.webcraft.sorteador",
   "appName": "Sorteador",
-  "webDir": ".",
+  "webDir": "dist",
   "bundledWebRuntime": false
 }
