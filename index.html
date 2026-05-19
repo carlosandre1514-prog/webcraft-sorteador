@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="loadMockPlayers()" class="text-xs font-semibold px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 active:scale-95 transition-all flex items-center gap-1.5 text-slate-300">
+                <button onclick="loadMockPlayers()" class="text-xs font-semibold px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 active:scale-95 transition-all flex items-center gap-1.5 text-slate-300 cursor-pointer">
                     <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
                     Carregar Craques
                 </button>
@@ -83,6 +83,21 @@
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Nome do Jogador</label>
                             <input type="text" id="player-name" required placeholder="Ex: Neymar Jr" 
                                 class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Posição</label>
+                            <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-1.5 rounded-xl border border-white/5">
+                                <button type="button" id="btn-pos-linha" onclick="selectPosition('linha')" class="py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-indigo-600 text-white cursor-pointer">
+                                    <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                                    Jogador de Linha
+                                </button>
+                                <button type="button" id="btn-pos-goleiro" onclick="selectPosition('goleiro')" class="py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer">
+                                    <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+                                    Goleiro
+                                </button>
+                            </div>
+                            <input type="hidden" id="player-position" value="linha">
                         </div>
                         
                         <div>
@@ -123,7 +138,7 @@
                         <div class="flex items-center justify-between p-3 bg-slate-950/30 rounded-xl border border-white/5">
                             <div class="flex flex-col">
                                 <span class="text-sm font-semibold text-slate-200">Equilibrar Times</span>
-                                <span class="text-xs text-slate-400">Distribui as estrelas igualmente</span>
+                                <span class="text-xs text-slate-400">Distribui as estrelas e posições igualmente</span>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="balance-teams" checked class="sr-only peer">
@@ -147,7 +162,7 @@
                             <h2 class="heading-font text-xl font-bold text-white">Jogadores Escalados</h2>
                             <span id="player-counter" class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-2.5 py-1 rounded-full border border-indigo-500/30">0</span>
                         </div>
-                        <button onclick="clearAllPlayers()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold transition-colors flex items-center gap-1">
+                        <button onclick="clearAllPlayers()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold transition-colors flex items-center gap-1 cursor-pointer">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                             Limpar Tudo
                         </button>
@@ -181,7 +196,7 @@
                     </h2>
                     <p class="text-sm text-slate-400">Os times foram definidos e equilibrados com sucesso.</p>
                 </div>
-                <button onclick="copyAllTeams()" class="bg-white/10 hover:bg-white/15 active:scale-95 text-white font-semibold py-2.5 px-4 rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2 text-sm">
+                <button onclick="copyAllTeams()" class="bg-white/10 hover:bg-white/15 active:scale-95 text-white font-semibold py-2.5 px-4 rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
                     <i data-lucide="copy" class="w-4 h-4 text-indigo-400"></i>
                     Copiar Todos para WhatsApp
                 </button>
@@ -230,22 +245,39 @@
             skillVal.innerText = `${e.target.value}★`;
         });
 
-        // Mock de jogadores para teste rápido
+        // Seleção de posição no cadastro
+        function selectPosition(pos) {
+            const btnLinha = document.getElementById('btn-pos-linha');
+            const btnGoleiro = document.getElementById('btn-pos-goleiro');
+            const hiddenInput = document.getElementById('player-position');
+
+            hiddenInput.value = pos;
+
+            if (pos === 'linha') {
+                btnLinha.className = "py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-indigo-600 text-white cursor-pointer";
+                btnGoleiro.className = "py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+            } else {
+                btnGoleiro.className = "py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-indigo-600 text-white cursor-pointer";
+                btnLinha.className = "py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+            }
+        }
+
+        // Mock de jogadores para teste rápido (incluindo goleiros)
         const mockPlayers = [
-            { id: 1, name: "Neymar Jr", skill: 5 },
-            { id: 2, name: "Lionel Messi", skill: 5 },
-            { id: 3, name: "Cristiano Ronaldo", skill: 5 },
-            { id: 4, name: "Casemiro", skill: 4 },
-            { id: 5, name: "Vinicius Jr", skill: 5 },
-            { id: 6, name: "Luka Modrić", skill: 4 },
-            { id: 7, name: "Alisson Becker", skill: 4 },
-            { id: 8, name: "Thiago Silva", skill: 4 },
-            { id: 9, name: "Marquinhos", skill: 3 },
-            { id: 10, name: "Richarlison", skill: 3 },
-            { id: 11, name: "Antony", skill: 2 },
-            { id: 12, name: "Raphinha", skill: 3 },
-            { id: 13, name: "Lucas Paquetá", skill: 3 },
-            { id: 14, name: "Danilo", skill: 2 }
+            { id: 1, name: "Alisson Becker", skill: 5, position: "goleiro" },
+            { id: 2, name: "Ederson Moraes", skill: 4, position: "goleiro" },
+            { id: 3, name: "Neymar Jr", skill: 5, position: "linha" },
+            { id: 4, name: "Lionel Messi", skill: 5, position: "linha" },
+            { id: 5, name: "Cristiano Ronaldo", skill: 5, position: "linha" },
+            { id: 6, name: "Casemiro", skill: 4, position: "linha" },
+            { id: 7, name: "Vinicius Jr", skill: 5, position: "linha" },
+            { id: 8, name: "Luka Modrić", skill: 4, position: "linha" },
+            { id: 9, name: "Thiago Silva", skill: 4, position: "linha" },
+            { id: 10, name: "Marquinhos", skill: 3, position: "linha" },
+            { id: 11, name: "Richarlison", skill: 3, position: "linha" },
+            { id: 12, name: "Antony", skill: 2, position: "linha" },
+            { id: 13, name: "Raphinha", skill: 3, position: "linha" },
+            { id: 14, name: "Lucas Paquetá", skill: 3, position: "linha" }
         ];
 
         function loadMockPlayers() {
@@ -257,19 +289,23 @@
         function handleAddPlayer(event) {
             event.preventDefault();
             const nameInput = document.getElementById('player-name');
+            const positionInput = document.getElementById('player-position');
             const name = nameInput.value.trim();
             const skill = parseInt(skillInput.value);
+            const position = positionInput.value;
 
             if (name) {
                 const newPlayer = {
                     id: Date.now(),
                     name: name,
-                    skill: skill
+                    skill: skill,
+                    position: position
                 };
                 players.push(newPlayer);
                 nameInput.value = '';
                 skillInput.value = 3;
                 skillVal.innerText = '3★';
+                selectPosition('linha'); // Reseta para linha por padrão
                 updateUI();
                 showToast(`${name} adicionado!`);
             }
@@ -318,9 +354,16 @@
                         : '<span class="text-slate-700">★</span>';
                 }
 
+                const positionBadge = player.position === 'goleiro' 
+                    ? `<span class="inline-flex items-center gap-0.5 text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 rounded font-bold uppercase"><i data-lucide="shield" class="w-2.5 h-2.5"></i> GOL</span>`
+                    : `<span class="inline-flex items-center gap-0.5 text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-1.5 py-0.2 rounded font-bold uppercase"><i data-lucide="user" class="w-2.5 h-2.5"></i> LIN</span>`;
+
                 item.innerHTML = `
-                    <div class="flex flex-col">
-                        <span class="font-semibold text-sm text-slate-200">${player.name}</span>
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold text-sm text-slate-200">${player.name}</span>
+                            ${positionBadge}
+                        </div>
                         <div class="flex items-center gap-1 text-xs">
                             ${stars}
                         </div>
@@ -334,7 +377,7 @@
             lucide.createIcons();
         }
 
-        let lastGeneratedTeams = []; // Guarda o último sorteio para cópia global
+        let lastGeneratedTeams = []; 
 
         function drawTeams() {
             if (players.length < 2) {
@@ -372,25 +415,29 @@
                     });
                 }
 
+                // Separa goleiros e jogadores de linha
+                const goleiros = players.filter(p => p.position === 'goleiro');
+                const linha = players.filter(p => p.position === 'linha');
+
                 if (balance) {
-                    // Distribuição Equilibrada por Habilidade
-                    // Ordena jogadores por skill decrescente
-                    const sortedPlayers = [...players].sort((a, b) => b.skill - a.skill);
-                    
-                    // Distribui usando algoritmo de "Serpente" ou Ganancioso (atribui ao time com menor soma de skill)
-                    sortedPlayers.forEach(player => {
-                        // Acha o time que atualmente tem a menor soma de skill
+                    // Ordena ambos de forma decrescente por habilidade
+                    goleiros.sort((a, b) => b.skill - a.skill);
+                    linha.sort((a, b) => b.skill - a.skill);
+
+                    // 1. Distribui os goleiros de forma equilibrada
+                    goleiros.forEach((gk, idx) => {
+                        generated[idx % numTeams].players.push(gk);
+                    });
+
+                    // 2. Distribui os jogadores de linha de forma equilibrada (Serpente/Ganancioso)
+                    linha.forEach(player => {
                         let bestTeamIndex = 0;
                         let minSkillSum = Infinity;
-
-                        // Para desempatar e não sobrecarregar de jogadores um time só,
-                        // priorizamos também times com menos jogadores.
                         let minPlayerCount = Math.min(...generated.map(t => t.players.length));
 
                         generated.forEach((team, idx) => {
                             const teamSkillSum = team.players.reduce((acc, p) => acc + p.skill, 0);
                             
-                            // Se o time tem o número mínimo de jogadores atual
                             if (team.players.length === minPlayerCount) {
                                 if (teamSkillSum < minSkillSum) {
                                     minSkillSum = teamSkillSum;
@@ -399,7 +446,6 @@
                             }
                         });
 
-                        // Se todos os times tiverem tamanhos diferentes, distribui no que tem menos jogadores
                         if (minSkillSum === Infinity) {
                             let lowestCountIndex = 0;
                             let lowestCount = Infinity;
@@ -414,11 +460,20 @@
 
                         generated[bestTeamIndex].players.push(player);
                     });
+
                 } else {
-                    // Distribuição Totalmente Aleatória
-                    const shuffled = [...players].sort(() => Math.random() - 0.5);
-                    shuffled.forEach((player, idx) => {
-                        generated[idx % numTeams].players.push(player);
+                    // Distribuição Aleatória pura
+                    const shuffledGols = [...goleiros].sort(() => Math.random() - 0.5);
+                    const shuffledLinha = [...linha].sort(() => Math.random() - 0.5);
+
+                    shuffledGols.forEach((gk, idx) => {
+                        generated[idx % numTeams].players.push(gk);
+                    });
+
+                    shuffledLinha.forEach((player, idx) => {
+                        // Começa a preencher a partir de onde os goleiros pararam
+                        const targetTeamIdx = (shuffledGols.length + idx) % numTeams;
+                        generated[targetTeamIdx].players.push(player);
                     });
                 }
 
@@ -435,25 +490,40 @@
                 const totalSkill = team.players.reduce((acc, p) => acc + p.skill, 0);
                 const avgSkill = (totalSkill / (team.players.length || 1)).toFixed(1);
 
-                const teamCard = document.createElement('div');
-                teamCard.className = `bg-white/5 border ${team.meta.border} rounded-2xl shadow-lg ${team.meta.glow} overflow-hidden backdrop-blur-sm flex flex-col`;
-                
+                // Ordena os jogadores para mostrar goleiros no topo
+                const sortedTeamPlayers = [...team.players].sort((a, b) => {
+                    if (a.position === 'goleiro' && b.position !== 'goleiro') return -1;
+                    if (a.position !== 'goleiro' && b.position === 'goleiro') return 1;
+                    return b.skill - a.skill;
+                });
+
                 let playersListHTML = '';
-                team.players.forEach(p => {
+                sortedTeamPlayers.forEach(p => {
+                    const isGoleiro = p.position === 'goleiro';
+                    const itemBg = isGoleiro ? 'bg-emerald-500/5' : '';
+                    const badge = isGoleiro 
+                        ? `<span class="text-[9px] font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded uppercase flex items-center gap-0.5"><i data-lucide="shield" class="w-2.5 h-2.5"></i> GOL</span>`
+                        : `<span class="text-xs bg-white/5 text-amber-400 font-bold px-2 py-0.5 rounded border border-white/5">${p.skill}★</span>`;
+
                     playersListHTML += `
-                        <li class="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
-                            <span class="text-sm font-medium text-slate-200">${p.name}</span>
-                            <span class="text-xs bg-white/5 text-amber-400 font-bold px-2 py-0.5 rounded border border-white/5">${p.skill}★</span>
+                        <li class="flex justify-between items-center py-2.5 px-3 border-b border-white/5 last:border-0 ${itemBg}">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-medium ${isGoleiro ? 'text-emerald-300 font-semibold' : 'text-slate-200'}">${p.name}</span>
+                            </div>
+                            ${badge}
                         </li>
                     `;
                 });
 
+                const teamCard = document.createElement('div');
+                teamCard.className = `bg-white/5 border ${team.meta.border} rounded-2xl shadow-lg ${team.meta.glow} overflow-hidden backdrop-blur-sm flex flex-col`;
+                
                 teamCard.innerHTML = `
                     <div class="bg-gradient-to-r ${team.meta.bg} px-4 py-3 flex justify-between items-center">
                         <h3 class="heading-font font-bold text-slate-950">${team.meta.name}</h3>
                         <span class="text-[10px] font-extrabold bg-slate-950/30 text-white px-2.5 py-1 rounded-full">Média: ${avgSkill}★</span>
                     </div>
-                    <div class="p-4 flex-1">
+                    <div class="flex-1">
                         <ul class="divide-y divide-white/5">
                             ${playersListHTML}
                         </ul>
@@ -475,8 +545,16 @@
             if (!team) return;
 
             let text = `*⚽ ${team.meta.name.toUpperCase()} ⚽*\n\n`;
-            team.players.forEach((p, idx) => {
-                text += `${idx + 1}. ${p.name} (${p.skill}★)\n`;
+            
+            // Ordena goleiros primeiro na mensagem copiada
+            const sorted = [...team.players].sort((a, b) => {
+                if (a.position === 'goleiro' && b.position !== 'goleiro') return -1;
+                return 1;
+            });
+
+            sorted.forEach((p, idx) => {
+                const posStr = p.position === 'goleiro' ? '[Goleiro]' : '[Linha]';
+                text += `${idx + 1}. ${p.name} - ${posStr} (${p.skill}★)\n`;
             });
             
             const avgSkill = (team.players.reduce((acc, p) => acc + p.skill, 0) / team.players.length).toFixed(1);
@@ -493,8 +571,15 @@
             let text = `*🏆 TIMES SORTEADOS - DRAFTCRAFT 🏆*\n\n`;
             lastGeneratedTeams.forEach(team => {
                 text += `*🟢 ${team.meta.name.toUpperCase()}*\n`;
-                team.players.forEach((p, idx) => {
-                    text += `${idx + 1}. ${p.name} (${p.skill}★)\n`;
+                
+                const sorted = [...team.players].sort((a, b) => {
+                    if (a.position === 'goleiro' && b.position !== 'goleiro') return -1;
+                    return 1;
+                });
+
+                sorted.forEach((p, idx) => {
+                    const posStr = p.position === 'goleiro' ? '[Goleiro]' : '[Linha]';
+                    text += `${idx + 1}. ${p.name} - ${posStr} (${p.skill}★)\n`;
                 });
                 const avgSkill = (team.players.reduce((acc, p) => acc + p.skill, 0) / team.players.length).toFixed(1);
                 text += `_Média Técnica: ${avgSkill}★_\n\n`;
