@@ -1,0 +1,46 @@
+name: Compilar APK Android
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    name: Compilar APK do Aplicativo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Configurar Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Instalar Dependências do Projeto
+        run: |
+          npm install
+
+      - name: Sincronizar Projeto com Capacitor
+        run: |
+          npx cap init "Sorteador" "com.webcraft.sorteador" --web-dir=.
+          npx cap add android
+          npx cap sync android
+
+      - name: Compilar Projeto Android (Gradle Build)
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload do APK Compilado como Artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: App-Android-Debug-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
