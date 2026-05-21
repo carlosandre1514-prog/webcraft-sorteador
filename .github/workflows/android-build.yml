@@ -28,14 +28,10 @@ jobs:
         run: |
           npm install
 
-      - name: Compilar Código Frontend (TYPESCRIPT)
-        run: |
-          npm run build
-
 
       - name: Sincronizar Projeto com Capacitor
         run: |
-          npx cap init "Sorteador" "com.webcraft.sorteador" --web-dir=dist
+          npx cap init "Sorteador" "com.webcraft.sorteador" --web-dir=www
           npx cap add android
           npx cap sync android
 
