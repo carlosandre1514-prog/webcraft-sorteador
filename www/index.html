@@ -4,25 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Sorteador de Times Pro - WebCraft AI</title>
-    <!-- Tailwind CSS v3 (Ultra estável para WebViews e Apps nativos) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configuração do Tailwind para garantir os gradientes e fontes corretas
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Space Grotesk', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    
+    <!-- Tailwind CSS v4 (Compilação ultra-rápida) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- ESTILOS DO APLICATIVO (Substitui o style.css externo para evitar bloqueios no Android) -->
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -32,15 +24,30 @@
         .heading-font {
             font-family: 'Space Grotesk', sans-serif;
         }
-        /* Ajuste para telas com notch (iPhone/Android novos) */
+        /* Suporte para notch de aparelhos mais novos */
         .pb-safe {
             padding-bottom: env(safe-area-inset-bottom);
         }
+        /* Custom Scrollbar para a lista de jogadores */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col pb-safe">
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100 min-h-screen flex flex-col pb-safe">
 
-    <!-- Toast Notification -->
+    <!-- Toast de Notificação -->
     <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 ease-out flex items-center gap-2 bg-emerald-500 text-slate-950 font-bold px-4 py-3 rounded-xl shadow-lg shadow-emerald-500/20">
         <i data-lucide="check-circle" class="w-5 h-5"></i>
         <span id="toast-message">Copiado com sucesso!</span>
@@ -86,12 +93,12 @@
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Nome do Jogador</label>
                             <input type="text" id="player-name" required placeholder="Ex: Neymar Jr" 
-                                class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+                                class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Posição</label>
-                            <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-xl border border-white/5">
+                            <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-1 rounded-xl border border-white/5">
                                 <button type="button" id="btn-pos-linha" class="py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-indigo-600 text-white cursor-pointer">
                                     <i data-lucide="user" class="w-3.5 h-3.5"></i>
                                     Linha
@@ -106,7 +113,7 @@
                         
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Nível de Habilidade</label>
-                            <div class="flex items-center gap-2 bg-slate-950 p-2 rounded-xl border border-white/5">
+                            <div class="flex items-center gap-2 bg-slate-950/40 p-2 rounded-xl border border-white/5">
                                 <i data-lucide="star" class="w-4 h-4 text-slate-500 ml-2"></i>
                                 <div class="flex-1 flex justify-between px-2">
                                     <input type="range" id="player-skill" min="1" max="5" value="3" class="w-full accent-indigo-500 cursor-pointer">
@@ -138,14 +145,14 @@
                             <input type="range" id="teams-count" min="2" max="6" value="2" class="w-full accent-indigo-500 cursor-pointer">
                         </div>
 
-                        <div class="flex items-center justify-between p-3 bg-slate-950 rounded-xl border border-white/5">
+                        <div class="flex items-center justify-between p-3 bg-slate-950/30 rounded-xl border border-white/5">
                             <div class="flex flex-col">
                                 <span class="text-sm font-semibold text-slate-200">Equilibrar Times</span>
                                 <span class="text-[11px] text-slate-400">Distribui estrelas e goleiros igualmente</span>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="balance-teams" checked class="sr-only peer">
-                                <div class="w-11 h-6 bg-slate-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                             </label>
                         </div>
 
@@ -219,7 +226,12 @@
 
     </main>
 
-    <!-- Script de Funcionamento (JS Puro e Otimizado para WebView de Celular) -->
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-slate-950/80 py-6 mt-8 text-center text-xs text-slate-500">
+        <p>© <span id="year"></span> DraftCraft AI - Desenvolvido com Tailwind CSS & JavaScript</p>
+    </footer>
+
+    <!-- LÓGICA DO JOGO (Substitui o main.js externo para garantir o funcionamento offline do APK) -->
     <script>
         // Configuração Inicial do Estado
         let players = [];
@@ -256,12 +268,13 @@
         const btnPosLinha = document.getElementById('btn-pos-linha');
         const btnPosGoleiro = document.getElementById('btn-pos-goleiro');
 
-        // Event Listeners
+        // Inicialização de Ícones
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             document.getElementById('year').innerText = new Date().getFullYear();
         });
 
+        // Event Listeners seguros (Não quebram no Android WebView)
         if (playerSkillInput && skillValSpan) {
             playerSkillInput.addEventListener('input', (e) => {
                 skillValSpan.innerText = `${e.target.value}★`;
@@ -299,7 +312,6 @@
             copyAllButton.addEventListener('click', copyAllTeams);
         }
 
-        // Funções de Controle de Posicionamento
         function selectPosition(pos) {
             if (playerPositionInput) playerPositionInput.value = pos;
 
@@ -312,7 +324,6 @@
             }
         }
 
-        // Massa de Teste
         const mockPlayers = [
             { id: 1, name: "Alisson Becker", skill: 5, position: "goleiro" },
             { id: 2, name: "Ederson Moraes", skill: 4, position: "goleiro" },
@@ -364,7 +375,7 @@
             updateUI();
         }
 
-        window.removePlayer = removePlayer; // Expõe para clique dinâmico
+        window.removePlayer = removePlayer; // Expõe globalmente para botões dinâmicos
 
         function clearAllPlayers() {
             if (players.length === 0) return;
@@ -595,7 +606,7 @@
             });
         }
 
-        window.copySingleTeam = copySingleTeam;
+        window.copySingleTeam = copySingleTeam; // Expõe globalmente para botões dinâmicos
 
         function copyAllTeams() {
             if (lastGeneratedTeams.length === 0) return;
