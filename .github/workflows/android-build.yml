@@ -31,7 +31,9 @@ jobs:
 
       - name: Sincronizar Projeto com Capacitor
         run: |
-          npx cap init "Sorteador" "com.webcraft.sorteador" --web-dir=www
+          if [ ! -f "capacitor.config.json" ] && [ ! -f "capacitor.config.ts" ]; then
+            npx cap init "Sorteador" "com.webcraft.sorteador" --web-dir=www
+          fi
           npx cap add android
           npx cap sync android
 
